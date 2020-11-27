@@ -1,13 +1,15 @@
 import * as React from 'react'
 
+function useLocalStorageState(key, value) {
+  window.localStorage.setItem(key, value)
+}
+
 function Greeting({initialName = ''}) {
   const [name, setName] = React.useState(() =>
     window.localStorage.getItem('name'),
   )
 
-  React.useEffect(() => {
-    window.localStorage.setItem('name', name)
-  }, [name])
+  useLocalStorageState('name', name)
 
   function handleChange(event) {
     setName(event.target.value)
