@@ -1,12 +1,12 @@
 import * as React from 'react'
 
 function useLocalStorageState(key, value) {
-  window.localStorage.setItem(key, value)
+  window.localStorage.setItem(key, JSON.stringify(value))
 }
 
 function Greeting({initialName = ''}) {
   const [name, setName] = React.useState(() =>
-    window.localStorage.getItem('name'),
+    JSON.parse(window.localStorage.getItem('name')),
   )
 
   useLocalStorageState('name', name)
