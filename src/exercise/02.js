@@ -1,19 +1,24 @@
 import * as React from 'react'
 
-function useLocalStorageState(key, value) {
-  window.localStorage.setItem(key, JSON.stringify(value))
+function useLocalStorageState(key, initialState) {
+  const [state, setState] = React.useState(
+    () => JSON.parse(window.localStorage.getItem(key)) || initialState,
+  )
+
+  React.useEffect(() => {
+    window.localStorage.setItem(key, JSON.stringify(state))
+  }, [key, state])
+
+  return [state, setState]
 }
 
 function Greeting({initialName = ''}) {
-  const [name, setName] = React.useState(() =>
-    JSON.parse(window.localStorage.getItem('name')),
-  )
-
-  useLocalStorageState('name', name)
+  const [name, setName] = useLocalStorageState('name', initialName)
 
   function handleChange(event) {
     setName(event.target.value)
   }
+
   return (
     <div>
       <form>
